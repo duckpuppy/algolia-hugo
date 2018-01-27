@@ -1,6 +1,6 @@
 ## Algolia search uploader for Hugo
 
-(Algolia)[https://www.algolia.com] is a hosted search platform geared towards
+[Algolia](https://www.algolia.com) is a hosted search platform geared towards
 business users, but provides a free limited Community tier of their product.
 It integrates with Hugo quite well if you instruct Hugo to build a JSON site
 index file.
@@ -29,7 +29,7 @@ This tool has very little functionality right now.  There are three commands.
 This will update your search objects in the Algolia index.  It does this by
 deleting the existing objects and uploading the entire index again. In this way
 it alleviates the problem of old search objects that may have been edited or
-deleted from remaining in the index. Future versions of this tool may support
+deleted remaining in the index. Future versions of this tool may support
 updating existing objects when I find both time and need.
 
 By default this tool will look for a file named `public/index.json` relative
