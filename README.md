@@ -20,6 +20,14 @@ algolia_api_key: <your api key>
 algolia_index_name: <your index name>
 ```
 
+It can also be configured via environment variables for ease of use in docker
+containers or on CI/CD platforms like CircleCI.  Just set variables named as
+above, only all-caps.
+
+```shell
+ALGOLIA_APP_ID=<appid> ALGOLIA_API_KEY=<api_key> ALGOLIA_INDEX_NAME=<index_name> algolia_hugo config
+```
+
 ## Usage 
 
 This tool has very little functionality right now.  There are three commands.
