@@ -15,12 +15,10 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 
-	"github.com/algolia/algoliasearch-client-go/algoliasearch"
+	"github.com/duckpuppy/algolia-hugo/app"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -36,17 +34,10 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		client := algoliasearch.NewClient(config.AlgoliaAppID, config.AlgoliaAPIKey)
-		index := client.InitIndex(config.AlgoliaIndexName)
+		index := config.GetIndex()
 
 		// Open the upload file and unmarshal it before going further
-		jsonfile, err := os.Open(config.UploadFile)
-		if err != nil {
-			log.Fatal(err)
-		}
-		dec := json.NewDecoder(jsonfile)
-		var objects []algoliasearch.Object
-		err = dec.Decode(&objects)
+		objects, err := app.LoadObjectFile(config.UploadFile)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -55,19 +46,15 @@ to quickly create a Cobra application.`,
 
 		// First, delete all existing content in the index
 		fmt.Println("Deleting existing objects")
-		params := algoliasearch.Map{}
-		err = index.DeleteByQuery("", params)
-		if err != nil {
+		if err = app.ClearIndex(index); err != nil {
 			log.Fatal(err)
 		}
 
 		// Next, add the new objects to the search records
 		fmt.Printf("Uploading objects from %s\n", config.UploadFile)
-		res, err := index.AddObjects(objects)
-		if err != nil {
+		if _, err = index.AddObjects(objects); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(res)
 	},
 }
 
