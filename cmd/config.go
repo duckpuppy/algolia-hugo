@@ -15,25 +15,21 @@
 package cmd
 
 import (
-	"fmt"
-	"log"
-
-	"github.com/duckpuppy/algolia-hugo/app"
+	"github.com/apex/log"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-// clearCmd represents the clear command
-var clearCmd = &cobra.Command{
-	Use:   "clear",
-	Short: "Clear all the contents of the configured index",
+// configCmd represents the config command
+var configCmd = &cobra.Command{
+	Use:   "config",
+	Short: "Show config",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Clearing index: %s\n", config.AlgoliaIndexName)
-		if err := app.ClearIndex(config.GetIndex()); err != nil {
-			log.Fatal(err)
-		}
+		log.Infof("Config file used: %s", viper.ConfigFileUsed())
+		log.Infof("%+v", config)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(clearCmd)
+	rootCmd.AddCommand(configCmd)
 }

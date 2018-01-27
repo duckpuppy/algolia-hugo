@@ -18,14 +18,15 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/apex/log"
 	"github.com/duckpuppy/algolia-hugo/app"
 	"github.com/kyoh86/xdg"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
 var config app.Config
+var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -44,7 +45,12 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $XDG_CONFIG_HOME/algolia-hugo/algolia-hugo.yaml)")
+
+	rootCmd.PersistentFlags().
+		StringVarP(&cfgFile, "config", "c", "", "config file (default is $XDG_CONFIG_HOME/algolia-hugo/algolia-hugo.yaml)")
+
+	rootCmd.PersistentFlags().BoolVarP(&config.Verbose, "verbose", "v", false, "Display verbose output")
+	viper.BindPFlag("Verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -66,13 +72,17 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
+	_ = viper.ReadInConfig()
 
+	// Unmarshal the config into the config variable
 	viper.Unmarshal(&config)
+
+	if config.Verbose {
+		log.WithField("config", viper.ConfigFileUsed()).Info("Loaded config")
+	}
 }
 
 func setDefaults() {
 	viper.SetDefault("UploadFile", "public/index.json")
+	viper.SetDefault("Verbose", false)
 }

@@ -39,3 +39,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/kyoh86/xdg"
+
+[[constraint]]
+  name = "github.com/apex/log"
+  version = "1.0.0"

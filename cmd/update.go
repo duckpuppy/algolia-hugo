@@ -15,9 +15,7 @@
 package cmd
 
 import (
-	"fmt"
-	"log"
-
+	"github.com/apex/log"
 	"github.com/duckpuppy/algolia-hugo/app"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -26,34 +24,31 @@ import (
 // updateCmd represents the update command
 var updateCmd = &cobra.Command{
 	Use:   "update",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Upload a new set of search index objects from a JSON file",
 	Run: func(cmd *cobra.Command, args []string) {
 		index := config.GetIndex()
+		ctx := log.WithFields(log.Fields{
+			"file":  config.UploadFile,
+			"index": config.AlgoliaIndexName,
+			"cmd":   "update",
+		})
 
 		// Open the upload file and unmarshal it before going further
 		objects, err := app.LoadObjectFile(config.UploadFile)
 		if err != nil {
-			log.Fatal(err)
+			ctx.WithError(err).Fatal("Failed to load the upload file")
 		}
 
-		fmt.Printf("Using index: %s: \n", config.AlgoliaIndexName)
-
 		// First, delete all existing content in the index
-		fmt.Println("Deleting existing objects")
+		ctx.Info("Deleting existing objects")
 		if err = app.ClearIndex(index); err != nil {
-			log.Fatal(err)
+			ctx.WithError(err).Fatal("Failed to delete existing objects")
 		}
 
 		// Next, add the new objects to the search records
-		fmt.Printf("Uploading objects from %s\n", config.UploadFile)
+		ctx.Info("Uploading objects")
 		if _, err = index.AddObjects(objects); err != nil {
-			log.Fatal(err)
+			ctx.WithError(err).Fatal("Failed to upload new objects")
 		}
 	},
 }

@@ -5,7 +5,14 @@ import (
 	"os"
 
 	"github.com/algolia/algoliasearch-client-go/algoliasearch"
+	"github.com/apex/log"
+	"github.com/apex/log/handlers/cli"
 )
+
+func init() {
+	log.SetHandler(cli.Default)
+	log.SetLevel(log.DebugLevel)
+}
 
 func LoadObjectFile(file string) ([]algoliasearch.Object, error) {
 	jsonfile, err := os.Open(file)
