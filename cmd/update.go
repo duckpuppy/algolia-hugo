@@ -22,6 +22,7 @@ import (
 
 	"github.com/algolia/algoliasearch-client-go/algoliasearch"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // updateCmd represents the update command
@@ -38,17 +39,7 @@ to quickly create a Cobra application.`,
 		client := algoliasearch.NewClient(config.AlgoliaAppID, config.AlgoliaAPIKey)
 		index := client.InitIndex(config.AlgoliaIndexName)
 
-		// First, delete all existing content in the index
-		fmt.Printf("Using index: %s: \n", config.AlgoliaIndexName)
-
-		fmt.Println("Deleting existing objects")
-		params := algoliasearch.Map{}
-		err := index.DeleteByQuery("", params)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		// Next, upload the new index
+		// Open the upload file and unmarshal it before going further
 		jsonfile, err := os.Open(config.UploadFile)
 		if err != nil {
 			log.Fatal(err)
@@ -60,6 +51,17 @@ to quickly create a Cobra application.`,
 			log.Fatal(err)
 		}
 
+		fmt.Printf("Using index: %s: \n", config.AlgoliaIndexName)
+
+		// First, delete all existing content in the index
+		fmt.Println("Deleting existing objects")
+		params := algoliasearch.Map{}
+		err = index.DeleteByQuery("", params)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Next, add the new objects to the search records
 		fmt.Printf("Uploading objects from %s\n", config.UploadFile)
 		res, err := index.AddObjects(objects)
 		if err != nil {
@@ -72,4 +74,5 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(updateCmd)
 	updateCmd.Flags().StringVarP(&config.UploadFile, "file", "f", "public/index.json", "The file to upload")
+	viper.BindPFlag("UploadFile", updateCmd.Flags().Lookup("file"))
 }
