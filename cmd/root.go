@@ -63,7 +63,7 @@ func initConfig() {
 	} else {
 		// Search config in $XDG_CONFIG_HOME/algolia-hugo directory with name "algolia-hugo" (without extension).
 		for _, dir := range xdg.ConfigDirs() {
-			viper.AddConfigPath(dir)
+			viper.AddConfigPath(fmt.Sprintf("%s/algolia-hugo", dir))
 		}
 		viper.AddConfigPath(fmt.Sprintf("%s/algolia-hugo", xdg.ConfigHome()))
 		viper.SetConfigName("algolia-hugo")
