@@ -11,7 +11,7 @@ as the name of the index you created, to use this tool.
 
 The configuration file for this tool lives at
 `$XDG_CONFIG_HOME/algolia-hugo/algolia-hugo.yaml`, which by default points to
-`$HOME/.config/algolia-hugo/algolia-hugo.yaml`.  Plase the following contents
+`$HOME/.config/algolia-hugo/algolia-hugo.yaml`.  Place the following contents
 into that file.
 
 ```yaml
