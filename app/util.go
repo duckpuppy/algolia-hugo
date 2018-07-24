@@ -14,6 +14,7 @@ func init() {
 	log.SetLevel(log.DebugLevel)
 }
 
+// LoadObjectFile loads a JSON file of search terms and returns a slice of algoliasearch.Objects
 func LoadObjectFile(file string) ([]algoliasearch.Object, error) {
 	jsonfile, err := os.Open(file)
 	if err != nil {
@@ -30,7 +31,8 @@ func LoadObjectFile(file string) ([]algoliasearch.Object, error) {
 	return objects, nil
 }
 
+// ClearIndex will clear the search index
 func ClearIndex(index algoliasearch.Index) error {
-	params := algoliasearch.Map{}
-	return index.DeleteByQuery("", params)
+	_, err := index.Clear()
+	return err
 }

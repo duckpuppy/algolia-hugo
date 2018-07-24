@@ -50,7 +50,7 @@ func init() {
 		StringVarP(&cfgFile, "config", "c", "", "config file (default is $XDG_CONFIG_HOME/algolia-hugo/algolia-hugo.yaml)")
 
 	rootCmd.PersistentFlags().BoolVarP(&config.Verbose, "verbose", "v", false, "Display verbose output")
-	viper.BindPFlag("Verbose", rootCmd.PersistentFlags().Lookup("verbose"))
+	_ = viper.BindPFlag("Verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -75,7 +75,7 @@ func initConfig() {
 	_ = viper.ReadInConfig()
 
 	// Unmarshal the config into the config variable
-	viper.Unmarshal(&config)
+	_ = viper.Unmarshal(&config)
 
 	if config.Verbose {
 		log.WithField("config", viper.ConfigFileUsed()).Info("Loaded config")

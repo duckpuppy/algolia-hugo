@@ -56,5 +56,5 @@ var updateCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(updateCmd)
 	updateCmd.Flags().StringVarP(&config.UploadFile, "file", "f", "public/index.json", "The file to upload")
-	viper.BindPFlag("UploadFile", updateCmd.Flags().Lookup("file"))
+	_ = viper.BindPFlag("UploadFile", updateCmd.Flags().Lookup("file"))
 }
