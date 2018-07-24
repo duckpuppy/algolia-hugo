@@ -1,0 +1,18 @@
+{
+    "Enable": [
+        "deadcode",
+        "ineffassign",
+        "gosimple",
+        "staticcheck",
+        "gofmt",
+        "goimports",
+        "dupl",
+        "misspell",
+        "errcheck",
+        "vet",
+        "vetshadow"
+    ],
+    "Deadline": "10m",
+    "Vendor": true,
+    "Aggregate": true
+}
