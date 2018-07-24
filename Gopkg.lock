@@ -66,7 +66,11 @@
   digest = "1:697dfe408324c9ffd3c45a486d12c517bc3ebfd89d49375ece859b248f1471b0"
   name = "github.com/magefile/mage"
   packages = [
+    "build",
+    "mage",
     "mg",
+    "parse",
+    "parse/srcimporter",
     "sh",
     "types",
   ]
@@ -196,6 +200,7 @@
     "github.com/apex/log",
     "github.com/apex/log/handlers/cli",
     "github.com/kyoh86/xdg",
+    "github.com/magefile/mage/mage",
     "github.com/magefile/mage/mg",
     "github.com/magefile/mage/sh",
     "github.com/spf13/cobra",

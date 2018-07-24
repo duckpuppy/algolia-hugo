@@ -19,6 +19,7 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
+required = ["github.com/magefile/mage/mage"]
 
 [[constraint]]
   name = "github.com/spf13/cobra"
