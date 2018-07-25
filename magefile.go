@@ -143,7 +143,7 @@ func Test() error {
 	}
 
 	for _, pkg := range pkgs {
-		if err := sh.Run(goexe, "test", "-coverprofile="+cover, "-covermode=count", pkg); err != nil {
+		if err := sh.Run(goexe, "test", "-v", "-coverprofile="+cover, "-covermode=count", pkg); err != nil {
 			return err
 		}
 

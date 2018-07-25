@@ -10,12 +10,16 @@ jobs:
           key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
           paths:
             - /go/src/github.com/duckuppy/algolia-hugo/vendor
+      - run: go get github.com/jstemmer/go-junit-report
+      - run: go get github.com/magefile/mage
       - run:
           name: build
           command: |
-            go run mage.go build
-            go run mage.go test
+            mage build
+            mage test
       - save_cache:
           key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
           paths:
               - /go/src/github.com/duckpuppy/algolia-hugo/vendor
+      - store_artifacts:
+          path: coverage.html
