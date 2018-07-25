@@ -7,10 +7,7 @@ build:
   env:
     - CGO_ENABLED=0
   ldflags:
-    - -w -s
-    - -X cmd.Version={{.Version}}
-    - -X cmd.Build={{.Date}}
-    - -X cmd.Commit={{.Commit}}
+    - -w -s -X github.com/duckpuppy/{{.ProjectName}}/cmd.Version={{.Version}} -X github.com/duckpuppy/{{.ProjectName}}/cmd.Build={{.Date}} -X github.com/duckpuppy/{{.ProjectName}}/cmd.Commit={{printf "%.7s" .Commit}}
   goos:
     - linux
     - darwin

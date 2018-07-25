@@ -21,10 +21,10 @@ import (
 )
 
 var (
-	Version string
-	Build   string
-	Branch  string
-	Commit  string
+	Version = "0.0.0"
+	Build   = "unknown"
+	Branch  = "unknown"
+	Commit  = "unknown"
 )
 
 // versionCmd represents the version command
