@@ -58,6 +58,10 @@ func getMetalinter() error {
 	return goget("github.com/alecthomas/gometalinter")
 }
 
+func getGoreleaser() error {
+	return goget("github.com/goreleaser/goreleaser")
+}
+
 func installMetalinterLinters() error {
 	return sh.Run("gometalinter", "--install")
 }
