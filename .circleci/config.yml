@@ -37,9 +37,6 @@ jobs:
           destination: coverage
   release:
     <<: *defaults
-    branches:
-      only:
-        - master
     steps:
       - attach_workspace:
           at: /go/src/github.com/duckpuppy/algolia-hugo
