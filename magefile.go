@@ -167,7 +167,7 @@ func Test() error {
 		return err
 	}
 
-	return sh.Run(goexe, "tool", "cover", "-html="+coverAll)
+	return sh.Run(goexe, "tool", "cover", "-html="+coverAll, "-o", "coverage.html")
 }
 
 // Lint using Metalinter
