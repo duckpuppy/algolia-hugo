@@ -7,7 +7,11 @@ build:
   env:
     - CGO_ENABLED=0
   ldflags:
-    - -w -s -X github.com/duckpuppy/{{.ProjectName}}/cmd.Version={{.Version}} -X github.com/duckpuppy/{{.ProjectName}}/cmd.Build={{.Date}} -X github.com/duckpuppy/{{.ProjectName}}/cmd.Commit={{printf "%.7s" .Commit}}
+    - >-
+      -w -s
+      -X github.com/duckpuppy/{{.ProjectName}}/cmd.Version={{.Version}}
+      -X github.com/duckpuppy/{{.ProjectName}}/cmd.Build={{.Date}}
+      -X github.com/duckpuppy/{{.ProjectName}}/cmd.Commit={{printf "%.7s" .Commit}}
   goos:
     - linux
     - darwin
@@ -30,6 +34,9 @@ archive:
     windows: Windows
     386: i386
     amd64: x86_64
+  format_overrides:
+    - goos: windows
+      format: zip
 checksum:
   name_template: 'checksums.txt'
 snapshot:

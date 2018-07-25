@@ -1,2 +1,5 @@
 algolia-hugo
 dist/
+coverage-all.out
+coverage.html
+coverage.out

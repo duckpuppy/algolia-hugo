@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"runtime"
 	"strings"
 	"time"
 
@@ -83,33 +84,29 @@ func getPackages() ([]string, error) {
 // If not set, running mage will list available targets
 // var Default = Build
 
-// A build step that requires additional params, or platform specific steps for example
-// nolint: deadcode
-func Build() error {
+// Build the binary
+func Build() error { // nolint: deadcode
 	mg.Deps(Vendor)
 	fmt.Println("Building...")
 	return sh.RunWith(flagEnv(), goexe, "build", "-ldflags", ldflags, "-race", "-o", "build/algolia-hugo", "-v")
 }
 
 // Install Go Dep and sync vendored dependencies
-// nolint: deadcode
-func Vendor() error {
+func Vendor() error { // nolint: deadcode
 	mg.Deps(getDep)
 	fmt.Println("Vendoring Dependencies...")
 	return sh.RunV("dep", "ensure")
 }
 
-// A custom install step if you need your bin someplace other than go/bin
-// nolint: deadcode
-func Install() error {
+// Install the source and binary
+func Install() error { // nolint: deadcode
 	mg.Deps(Vendor)
 	fmt.Println("Installing...")
 	return sh.RunWith(flagEnv(), goexe, "install", "-ldflags", ldflags, "-race", "./...")
 }
 
 // Clean up after yourself
-// nolint: deadcode
-func Clean() {
+func Clean() { // nolint: deadcode
 	fmt.Println("Cleaning...")
 	sh.Run(goexe, "clean", "-x")
 	sh.Rm("build")
@@ -119,8 +116,7 @@ func Clean() {
 }
 
 // Run tests
-// nolint: deadcode
-func Test() error {
+func Test() error { // nolint: deadcode
 	fmt.Println("Running Tests...")
 	const (
 		coverAll = "coverage-all.out"
@@ -171,11 +167,23 @@ func Test() error {
 }
 
 // Lint using Metalinter
-// nolint: deadcode
-func Lint() {
-	mg.Deps(getMetalinter, installMetalinterLinters)
+func Lint() { // nolint: deadcode
+	// We have to do these sequentially rather than in one call
+	mg.Deps(getMetalinter)
+	mg.Deps(installMetalinterLinters)
+
 	fmt.Println("Linting...")
 	if err := sh.RunV("gometalinter", "./..."); err != nil {
 		fmt.Println(err)
 	}
+}
+
+// Run all tests and linters
+func Check() { // nolint: deadcode
+	if strings.Contains(runtime.Version(), "1.8") {
+		fmt.Println("Skip Check on %s\n", runtime.Version())
+		return
+	}
+
+	mg.Deps(Test, Lint)
 }
