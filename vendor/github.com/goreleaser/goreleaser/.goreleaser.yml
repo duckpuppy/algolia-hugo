@@ -1,0 +1,43 @@
+builds:
+  -
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+archive:
+  name_template: '{{ .Binary }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+  replacements:
+    darwin: Darwin
+    linux: Linux
+    windows: Windows
+    386: i386
+    amd64: x86_64
+  format_overrides:
+    - goos: windows
+      format: zip
+brew:
+  github:
+    owner: goreleaser
+    name: homebrew-tap
+  folder: Formula
+  homepage:  http://goreleaser.github.io
+  description: Deliver Go binaries as fast and easily as possible
+  dependencies:
+    - git
+fpm:
+  homepage:  http://goreleaser.github.io
+  description: Deliver Go binaries as fast and easily as possible
+  maintainer: Carlos Alexandro Becker <root@carlosbecker.com>
+  license: MIT
+  vendor: GoReleaser
+  formats:
+    - deb
+  dependencies:
+    - git

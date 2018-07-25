@@ -1,0 +1,4 @@
+dist/
+vendor
+coverage.txt
+goreleaser

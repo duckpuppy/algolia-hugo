@@ -19,7 +19,10 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
-required = ["github.com/magefile/mage/mage"]
+required = [
+  "github.com/magefile/mage/mage",
+  "github.com/goreleaser/goreleaser"
+]
 
 [[constraint]]
   name = "github.com/spf13/cobra"
