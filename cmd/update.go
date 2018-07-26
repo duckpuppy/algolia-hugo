@@ -15,8 +15,6 @@
 package cmd
 
 import (
-	"github.com/apex/log"
-	"github.com/duckpuppy/algolia-hugo/app"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -26,30 +24,7 @@ var updateCmd = &cobra.Command{
 	Use:   "update",
 	Short: "Upload a new set of search index objects from a JSON file",
 	Run: func(cmd *cobra.Command, args []string) {
-		index := config.GetIndex()
-		ctx := log.WithFields(log.Fields{
-			"file":  config.UploadFile,
-			"index": config.AlgoliaIndexName,
-			"cmd":   "update",
-		})
-
-		// Open the upload file and unmarshal it before going further
-		objects, err := app.LoadObjectFile(config.UploadFile)
-		if err != nil {
-			ctx.WithError(err).Fatal("Failed to load the upload file")
-		}
-
-		// First, delete all existing content in the index
-		ctx.Info("Deleting existing objects")
-		if err = app.ClearIndex(index); err != nil {
-			ctx.WithError(err).Fatal("Failed to delete existing objects")
-		}
-
-		// Next, add the new objects to the search records
-		ctx.Info("Uploading objects")
-		if _, err = index.AddObjects(objects); err != nil {
-			ctx.WithError(err).Fatal("Failed to upload new objects")
-		}
+		config.UploadIndex()
 	},
 }
 

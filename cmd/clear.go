@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/duckpuppy/algolia-hugo/app"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +27,7 @@ var clearCmd = &cobra.Command{
 	Short: "Clear all the contents of the configured index",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Clearing index: %s\n", config.AlgoliaIndexName)
-		if err := app.ClearIndex(config.GetIndex()); err != nil {
+		if err := config.ClearIndex(); err != nil {
 			log.Fatal(err)
 		}
 	},
