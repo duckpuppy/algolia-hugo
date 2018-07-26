@@ -16,7 +16,8 @@ package cmd
 
 import (
 	"fmt"
-	"log"
+
+	"github.com/apex/log"
 
 	"github.com/spf13/cobra"
 )
@@ -28,7 +29,7 @@ var clearCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Clearing index: %s\n", config.AlgoliaIndexName)
 		if err := config.ClearIndex(); err != nil {
-			log.Fatal(err)
+			log.WithError(err).Fatal("Failed to clear index")
 		}
 	},
 }
