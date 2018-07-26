@@ -18,13 +18,11 @@ jobs:
           command: |
             go get github.com/jstemmer/go-junit-report
             go get github.com/magefile/mage
+            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
       - run:
           name: Test
           command: |
             mage check
-      - run:
-          name: Build Binary
-          command: mage build
       - persist_to_workspace:
           root: .
           paths: .

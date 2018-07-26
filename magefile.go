@@ -51,9 +51,9 @@ func flagEnv() map[string]string {
 	}
 }
 
-func getDep() error {
-	return goget("github.com/golang/dep/cmd/dep")
-}
+// func getDep() error {
+// 	return goget("github.com/golang/dep/cmd/dep")
+// }
 
 func getMetalinter() error {
 	return goget("github.com/alecthomas/gometalinter")
@@ -93,7 +93,7 @@ func Build() error { // nolint: deadcode
 
 // Install Go Dep and sync vendored dependencies
 func Vendor() error { // nolint: deadcode
-	mg.Deps(getDep)
+	// mg.Deps(getDep)
 	fmt.Println("Vendoring Dependencies...")
 	return sh.RunV("dep", "ensure")
 }
