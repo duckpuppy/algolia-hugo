@@ -41,7 +41,8 @@ func init() {
 func flagEnv() map[string]string {
 	hash, _ := sh.Output("git", "rev-parse", "--short", "HEAD")
 	branch, _ := sh.Output("git", "rev-parse", "--abbrev-ref", "HEAD")
-	version := "0.0.1" // TODO: This needs to be read dynamically somehow
+	tag, _ := sh.Output("git", "describe", "--abbrev=0")
+	version := fmt.Sprintf("%s-next", tag)
 	return map[string]string{
 		"VERSION":     version,
 		"PACKAGE":     packageName,
