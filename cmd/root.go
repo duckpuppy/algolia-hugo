@@ -68,14 +68,18 @@ func initConfig() {
 		viper.AddConfigPath(fmt.Sprintf("%s/algolia-hugo", xdg.ConfigHome()))
 		viper.SetConfigName("algolia-hugo")
 	}
-
-	viper.AutomaticEnv() // read in environment variables that match
-
 	// If a config file is found, read it in.
 	_ = viper.ReadInConfig()
 
+	viper.AutomaticEnv() // bind to environment variables that match key names
+
 	// Unmarshal the config into the config variable
 	_ = viper.Unmarshal(&config)
+
+	// If the environment variables exist, we need to get the values and set the config
+	config.AlgoliaAPIKey = viper.GetString("algolia_api_key")
+	config.AlgoliaAppID = viper.GetString("algolia_app_id")
+	config.AlgoliaIndexName = viper.GetString("algolia_index_name")
 
 	if config.Verbose {
 		log.WithField("config", viper.ConfigFileUsed()).Info("Loaded config")
